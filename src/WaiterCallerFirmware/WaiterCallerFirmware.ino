@@ -124,7 +124,7 @@ void setup() {
   pinMode(BUILTIN_LED, OUTPUT); // Initialize the BUILTIN_LED pin as an output
   // initialize the LED pin as an output:
   pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, LOW);
+  digitalWrite(ledPin, HIGH);
   // initialize the pushbutton pin as an input:
   pinMode(buttonPin, INPUT);
   buttonWasPressed = false;
@@ -149,18 +149,18 @@ void loop() {
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
 
-  // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
+  // check if the pushbutton is pressed. If it is, the buttonState is LOW:
   if (buttonState == LOW && buttonWasPressed == false) {
     buttonWasPressed = true;
     // turn LED on:
     digitalWrite(ledPin, LOW);
     client.publish("waitercaller/desk/1", "1");
-  } else {
-    if (buttonState == HIGH) {
-      buttonWasPressed = false;
-      // turn LED off:
-      digitalWrite(ledPin, HIGH);
-    }
+  }
+  if (buttonState == HIGH && buttonWasPressed == true) {
+    buttonWasPressed = false;
+    // turn LED off:
+    digitalWrite(ledPin, HIGH);
+    client.publish("waitercaller/desk/1", "0");
   }
 
 }
